@@ -10,7 +10,6 @@ The schemes, designs, and usage methods vary depending on the APIs.
 
 Among various API styles, REST API is the most widely used one since it's intuitive and easy to use. This is because it has somewhat established conventions and relies on the HTTP method.
 
-<br/>
 
 ### simple conventions of url for REST API
 
