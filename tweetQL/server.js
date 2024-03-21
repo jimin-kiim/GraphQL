@@ -1,5 +1,16 @@
 import { ApolloServer, gql } from "apollo-server";
 
+const tweets = [
+  {
+    id: "1",
+    text: "first tweet"
+  },
+  {
+    id: "2",
+    text: "second tweet"
+  }
+];
+
 const typeDefs = gql`
   type User {
     id: ID!
@@ -11,7 +22,7 @@ const typeDefs = gql`
   type Tweet {
     id: ID!
     text: String!
-    author: User!
+    author: User
   }
 
   type Query { # GET (REST API)
@@ -25,7 +36,21 @@ const typeDefs = gql`
   }
 `;
 
-const server = new ApolloServer({ typeDefs });
+const resolvers = {
+  // resolver for the fields
+  Query: {
+    allTweets() {
+      return tweets;
+    },
+
+    tweet(_, {id}) { // root, args. {id} is opening up the args and getting id.
+      // when the tweet field in Query is reduired, this function is called.
+      return tweets.find(tweet => tweet.id === id);
+    }
+  }
+};
+
+const server = new ApolloServer({ typeDefs, resolvers });
 
 server.listen().then(({ url }) => {
   console.log(`Running on ${url}`);
