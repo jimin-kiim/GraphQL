@@ -13,9 +13,9 @@ const typeDefs = gql`
         rating: Float!
         runtime: Float!
         genres: [String]!
-        summary: String!
+        summary: String
         description_full: String!
-        synopsis: String!
+        synopsis: String
         yt_trailer_code: String!
         language: String!
         background_image: String!
