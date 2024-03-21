@@ -80,6 +80,9 @@ const resolvers = {
 
   Mutation: {
     postTweet(_, { text, userId }) {
+      const user = users.find((user) => user.id === userId);
+      if (!user) throw new Error(`User ID ${userId} is not found.`);
+      
       const newTweet = {
         id: tweets.length + 1,
         text
