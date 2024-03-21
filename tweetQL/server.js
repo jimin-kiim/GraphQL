@@ -22,27 +22,75 @@ let users = [
 ];
 
 const typeDefs = gql`
+  """
+  User object represents a resource for a User
+  """
   type User {
+    """
+    id of a user
+    """
     id: ID!
+
+    """
+    first name of a user
+    """
     firstName: String!
+
+    """
+    last name of a user
+    """
     lastName: String!
+
+    """
+    fullName is the sum of firstName and lastName as a string
+    """
     fullName: String! # a field that doesn't exist in the data but the resolver does. So it works
   }
-
+  """
+  Tweet object represents a resource for a Tweet
+  """
   type Tweet {
+    """
+    id of a tweet
+    """
     id: ID!
+
+    """
+    text contents of a tweet
+    """
     text: String!
+
+    """
+    author of a tweet
+    """
     author: User
   }
 
   type Query { # GET (REST API)
+    """
+    getting all the users exist in db
+    """
     allUsers: [User!]!
+
+    """
+    getting all the tweets exist in db
+    """
     allTweets: [Tweet!]! # similar to GET /api/v1/tweets from REST API # it always should be a list and the inside of the list always should be Tweet. empty can be allowed
+    """
+    getting a tweet with an id
+    """
     tweet(id: ID!): Tweet # similar to GET /api/v1/tweet/:id from REST API url variable from REST ~= argument from gql
   }
 
   type Mutation { # POST, PUT, DELETE (REST API)
-    postTweet(text: String!, userId: ID!): Tweet!
+    """
+    post a tweet if userId is valid else return error
+    """
+    postTweet(text: String!, userId: ID!): Tweet
+
+    """
+    delete a tweet if found, else return false
+    """
     deleteTweet(id: ID!): Boolean!
   }
 `;
@@ -56,9 +104,9 @@ const resolvers = {
   },
 
   Tweet: {
-    author({userId}) {
+    author({ userId }) {
       return users.find((user) => user.id === userId);
-    } 
+    }
   },
 
   // resolver for the fields
@@ -85,7 +133,8 @@ const resolvers = {
       
       const newTweet = {
         id: tweets.length + 1,
-        text
+        text,
+        userId
       };
       tweets.push(newTweet);
       return newTweet;
